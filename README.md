@@ -4,6 +4,6 @@
 - Преподаватель: Годовиченко Николай Анатольевич
 - email: nick.godov@gmail.com
 - skype: nickgodov
-- telegram: @MykolaHdv
+- telegram: [@MykolaHdv](https://t.me/MykolaHdv)
 
 ### [Электронный журнал](http://opu.ua)
