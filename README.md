@@ -6,4 +6,4 @@
 - skype: nickgodov
 - telegram: @MykolaHdv
 
-## Электронный журнал
+### [Электронный журнал](http://opu.ua)
