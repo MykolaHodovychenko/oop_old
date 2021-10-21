@@ -136,8 +136,6 @@ public double foo(int a, int b) {
 interface MyInterface {
     double foo(int a, int b);
 }
-
-}
 // 1. Лямбда-выражение присваивается ссылочной переменной
 
 // Переменная a1 указывает на объект анонимного класса
