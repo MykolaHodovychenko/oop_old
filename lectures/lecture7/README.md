@@ -156,7 +156,6 @@ System.out.println(a2.foo(2, 5)); // Выведет 10
 
 ```java
 public static void main(String[] args) {
-
     MyInterface b1 = foo();
     MyInterface b2 = foo2();
 }
@@ -193,7 +192,6 @@ public static void main(String[] args) {
             return 2 * b + 3 * a;
         }
     });
-
 }
 
 public static void func(MyInterface i) {
