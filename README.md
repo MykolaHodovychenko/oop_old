@@ -6,7 +6,7 @@
 - skype: nickgodov
 - telegram: [@MykolaHdv](https://t.me/MykolaHdv)
 
-### [Електронний журнал] (http://opu.ua)
+### [Електронний журнал](http://opu.ua)
 
 ### Помилки, неточності і невідформатований текст
 
