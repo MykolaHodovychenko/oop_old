@@ -1,4 +1,4 @@
-#### Російськомовна версія курсу доступна в гілці [ua](https://github.com/MykolaHodovychenko/oop/tree/ua)
+#### Російськомовна версія курсу доступна в гілці [ru](https://github.com/MykolaHodovychenko/oop/tree/ru)
 
 # Дисципліна "Об'єктно-орієнтоване програмування"
 
