@@ -1,4 +1,4 @@
-> Украинская версия курса доступна в ветке [ua](https://github.com/MykolaHodovychenko/oop/tree/ua)
+#### Украинская версия курса доступна в ветке [ua](https://github.com/MykolaHodovychenko/oop/tree/ua)
 
 # Дисциплина "Объектно-ориентированное программирование"
 
