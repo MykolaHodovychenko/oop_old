@@ -234,5 +234,216 @@ class Pair<T, V extends T> {}
 
 Для того, чтобы иметь возможность использовать обобщенный класс в качестве аргумента метода, необходимо использовать так называемый **"шаблон аргумента" (wildcard)**.
 
-Предположим, нужно реализовать метод, который сравнивает два объекта класса **NumericValue** и возвращает **true**, если оба объекта равны.
-Необходимо сообщить компилятору, что входным аргументом является объект обобщенного класса. Написать **NumericValue<T>** не получится, так как это не объявление класса, а записать какое-то конкретное значение мы не можем, так как мы хотим подать объект обобщенного типа с любым допустимым типом данных. Для такого случая используется специальный символ `?`, который и является шаблоном аргумента.
+Предположим, нужно реализовать метод, который сравнивает два объекта класса `NumericValue` и возвращает `true`, если оба объекта равны.
+Необходимо сообщить компилятору, что входным аргументом является объект обобщенного класса. Написать `NumericValue<T>` не получится, так как это не объявление класса, а записать какое-то конкретное значение мы не можем, так как мы хотим подать объект обобщенного типа с любым допустимым типом данных. Для такого случая используется специальный символ `?`, который и является шаблоном аргумента.
+
+```java
+boolean isEquals(NumericValue<?> obj1, NumericValue<?> obj2) {
+    double d1 = Math.abs(obj1.value.doubleValue());
+    double d2 = Math.abs(obj2.value.doubleValue());
+
+    return d1 == d2;
+}
+
+class NumericValue<T extends Number> {
+    T value;
+
+    public NumericValue(T value) {
+        this.value = value;
+    }
+}
+```
+
+Такая сигнатура метода означает, что метод `isEquals()` принимает на вход аргументы обобщенного типа `NumericValue`, где параметр типа может быть любым допустимым для типа `NumericValue`.
+
+### Ограничение снизу при использовании wildcard
+
+Кроме "ограничения сверху", мы можем устанавливать "ограничение снизу", то есть установить в качестве корректного типа этот тип и суперклассы выше по цепочке наследования. Это реализуется с помощью ключевого слова `super`.
+
+```java
+void foo(GenericClass<? super C> obj1, GenericClass<? super B> obj2) {
+    // типы obj1 могут быть C, B, A, Object
+    // типы obj2 могут быть B, A, Object
+}
+
+class GenericClass<T> {}
+
+class A {}
+class B extends A {}
+class C extends B {}
+class D extends C {}
+```
+
+## Обобщенные методы
+
+Методы в обобщенных классах могут использовать параметр типа своего класса, а следовательно, автоматически становятся обобщенными относительно параметра класса. Однако можно объявить обобщенный метод, который сам по себе использует параметр типа. Более того, такой метод может быть объявлен в обычном, а не обобщенном классе.
+К примеру, реализуем методы, который будет сравнивать два массива обобщенных типов. Сначала объявим два класса
+
+```java
+class Student {
+    private String name;
+    private int avgMark;
+
+    public Student(String name, int avgMark) {
+        this.name = name;
+        this.avgMark = avgMark;
+    }
+}
+
+class PostGradStudent extends Student {
+    private String phDTopic;
+
+    public PostGradStudent(String name, int avgMark, String phDTopic) {
+        super(name, avgMark);
+        this.phDTopic = phDTopic;
+    }
+}
+```
+
+Далее объявим метод `compareArrays()`
+
+```java
+public <T extends Comparable<T>, V extends T> boolean compareArrays(T[] arg0, V[] arg1) {
+    if (arg0.length != arg1.length)
+        return false;
+    
+    for (int i = 0; i < arg0.length; i++) {
+        if (!arg0[i].equals(arg1[i]))
+            return false;
+    }
+
+    return true;
+}
+```
+
+Выражение `T` extends `Comparable<T>` означает, что тип `T` должен реализовывать обобщенный интерфейс `Comparable<T>`, то есть чтобы мы могли сравнить объект типа `T` с другим объектом типа `T`. Выражение `V extends T` означает, что тип `V` должен быть или типом `T` или производным от `T` типом.
+
+Создадим два массива и попытаемся вызвать метод `compareArrays()`.
+
+```java
+Student[] students1 = new Student[10];
+PostGradStudent[] students2 = new PostGradStudent[10];
+
+compareArrays(students1, students2);
+```
+
+Такой код вызовет ошибку компиляции, так как тип `Student` не реализует интерфейс `Comparable<Student>`.
+  
+```
+java: method compareArrays in class com.company.Main cannot be applied to given types;
+  required: T[],V[]
+  found:    com.company.Student[],com.company.PostGradStudent[]
+  reason: inference variable T has incompatible bounds
+    lower bounds: java.lang.Comparable<T>
+    lower bounds: com.company.Student
+```
+
+Исправим данную ошибку
+
+```java
+class Student implements Comparable<Student> {
+    private String name;
+    private int avgMark;
+
+    public Student(String name, int avgMark) {
+        this.name = name;
+        this.avgMark = avgMark;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        return this.avgMark - o.avgMark;
+    }
+}
+```
+
+Если мы перепишем класс `PostGradStudent` так, чтобы он не является наследником типа `Student`, то при исполнении кода получим следующую ошибку
+
+```
+java: method compareArrays in class com.company.Main cannot be applied to given types;
+  required: T[],V[]
+  found:    com.company.Student[],com.company.PostGradStudent[]
+  reason: inference variable V has incompatible bounds
+    lower bounds: java.lang.Comparable<T>,T
+    lower bounds: com.company.PostGradStudent
+```
+
+## Обобщенный конструктор
+
+Так как конструктор является методом, то мы также можем объявлять обобщенные конструкторы. Обобщенный конструктор можно объявить даже тогда, когда сам класс не является обобщенным.
+
+```java
+class Accumulator {
+
+    public <T extends Number> Accumulator(T number1, T number2) {
+        // ...
+    }
+}
+
+Accumulator accumulator = new Accumulator(5, 10);
+Accumulator accumulator2 = new Accumulator(5.5d, 10L);
+Accumulator accumulator3 = new Accumulator(5.5d, "four"); // вызовет ошибку
+```
+
+## Обобщенный интерфейс
+
+Обобщенный интерфейс объявляется также как и обобщенный класс
+
+```java
+interface MyInterface<T> {
+    void foo(T value);
+}
+```
+
+Если класс реализует обобщенный интерфейс, то он также должен быть обобщенным. Не обобщенным он может быть только в том случае, если вы явно указываете тип при объявлении класса.
+
+```java
+interface MyInterface<T> {
+    void foo(T value);
+}
+
+// Ошибка, класс должен быть обобщенным
+class MyClass1 implements MyInterface<T> {
+    @Override
+    public void foo(T value) {}
+}
+
+// Правильное объявление. Класс реализующий
+// обобщенный интерфейс должен быть обобщенным
+class MyClass2<T> implements MyInterface<T> {
+    @Override
+    public void foo(T value) {}
+}
+
+// Мы явно указали параметр типа интерфейса
+// и класс может быть не обобщенным
+class MyClass3 implements MyInterface<Double> {
+    @Override
+    public void foo(Double value) {}
+}
+```
+
+В интерфейсе можно указать ограничение с помощью ключевого слова extends. Класс, который реализует обобщенный интерфейс с ограничением, также должен соблюдать эти ограничения. При объявлении класса ограничение следует прописать после названия класса, но после ключевого слова implements его дублировать не надо.
+
+```java
+interface Iface<T extends Number> {}
+
+// Выдаст ошибку
+class MyClass4<T> implements Iface<T>{}
+
+// Всё правильно
+class MyClass5<T extends Number> implements Iface<T> {}
+
+// Выдаст ошибку
+class MyClass6<T extends Number> implements Iface<T extends Number>{}
+```
+
+## Соглашение по правилам названия параметров типа
+
+Согласно общепринятым правилам и конвенции кода, параметры типов записываются в виде одного символа алфавита в верхнем регистре. Рекомендуется использовать следующие символы алфавита:
+- `E` (означает Element, часто используется в коллекциях);
+- `K` (означает Key);
+- `N` (означает Number);
+- `T` (означает Type);
+- `V` (означает Value);
+- `S`, `U` - обычно вторые, третьи, четвертые параметры типа.
