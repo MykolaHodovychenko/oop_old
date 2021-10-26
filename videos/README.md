@@ -1,52 +1,60 @@
-# Видеоролики
+# Відеоролики
 
-> :tv: Плейлист доступен [здесь](https://youtube.com/playlist?list=PLKTsfoGIz8kfGfYo8cvGK6SXm_jOX3Vpc)
+> :tv: Плейлист доступний [тут](https://youtube.com/playlist?list=PLKTsfoGIz8kfGfYo8cvGK6SXm_jOX3Vpc)
 
-## Лекции
+## Лекції
 
-**Лекция 2 (Объекты и классы)**
-- [ссылка на видео](https://youtu.be/WL-wxQm3PvY)
-- [конспект лекции по теме]()
+**Лекція 2 (Об'єкти та класи)**
+- [Посилання на відео](https://youtu.be/WL-wxQm3PvY)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture2)
 
-**Лекция 3 (Инкапсуляция)**
-- [ссылка на видео](https://youtu.be/3VDU-bPvZew)
-- [конспект лекции по теме]()
+**Лекція 3 (Інкапсуляція)**
+- [Посилання на відео](https://youtu.be/3VDU-bPvZew)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture3)
 
-**Лекция 4 (Наследование)**
-- [ссылка на видео](https://youtu.be/aGK1WokKftY)
-- [конспект лекции по теме]()
+**Лекція 4 (Спадкування)**
+- [Посилання на відео](https://youtu.be/aGK1WokKftY)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture4)
 
-**Лекция 5 (Полиморфизм)**
-- [ссылка на видео](https://youtu.be/wpz_DVxv89o)
-- [конспект лекции по теме]()
+**Лекція 5 (Поліморфізм)**
+- [Посилання на відео](https://youtu.be/wpz_DVxv89o)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture5)
 
-**Лекция 6 (Абстракция. Абстрактные классы и интерфейсы)**
-- [ссылка на видео]()
-- [конспект лекции по теме]()
+**Лекція 6 (Абстракція. Абстрактні класи та інтерфейси)**
+- [Посилання на відео](https://youtu.be/yW12cDuQ-yE)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture6)
 
-**Лекция 7 (Анонимные объекты, функции. Лямбда-выражения)**
-- [ссылка на видео]()
-- [конспект лекции по теме]()
+**Лекція 7 (Анонімні об'єкти, функції. Лямбда-вирази)**
+- [Посилання на відео](https://youtu.be/fzA9EXdlFes)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
-## Лабораторные работы
+**Лекція 8 (Узагальнене програмування)**
+- [Посилання на відео]()
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
-**Обсуждение первой лабораторной, задание на вторую**
-- [ссылка на видео](https://youtu.be/hGRYpwvC_II)
-- [задание на лабораторную работу]()
+## Лабораторні роботи
 
-**Обсуждение второй лабораторной, задание на третью**
-- [ссылка на видео](https://youtu.be/Q67PBFuAWVs)
-- [задание на лабораторную работу]()
+**Обговорення першої лабораторної, завдання на другу**
+- [Посилання на відео](https://youtu.be/hGRYpwvC_II)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab2)
+
+**Обговорення другої лабораторної, завдання на третю**
+- [Посилання на відео](https://youtu.be/Q67PBFuAWVs)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab3)
  
-**Задание на четвертую лабораторную работу**
-- [ссылка на видео](https://youtu.be/1UeFn2ZUvXk)
-- [видео занятия группы АИ-205](https://youtu.be/l47bNAJY884)
-- [задание на лабораторную работу]()
+**Завдання на четверту лабораторну роботу**
+- [Посилання на відео](https://youtu.be/1UeFn2ZUvXk)
+- [відео заняття групи АІ-205] (https://youtu.be/l47bNAJY884)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab4)
 
-**Задание на пятую лабораторную работу**
-- [ссылка на видео]()
-- [задание на лабораторную работу]()
+**Завдання на п'яту лабораторну роботу**
+- [Посилання на відео](https://youtu.be/k8AyHKkFh0E)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab5)
 
-**Задание на шестую лабораторную работу**
-- [ссылка на видео]()
-- [задание на лабораторную работу]()
+**Завдання на шосту лабораторну роботу**
+- [Посилання на відео](https://youtu.be/m3YpVgBy21M)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab6)
+
+**Завдання на сьому лабораторну роботу**
+- [Посилання на відео](https://youtu.be/0dKmKC_0ykI)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
