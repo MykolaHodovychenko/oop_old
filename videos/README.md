@@ -6,31 +6,31 @@
 
 **Лекция 2 (Объекты и классы)**
 - [ссылка на видео](https://youtu.be/WL-wxQm3PvY)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture2)
 
 **Лекция 3 (Инкапсуляция)**
 - [ссылка на видео](https://youtu.be/3VDU-bPvZew)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture3)
 
 **Лекция 4 (Наследование)**
 - [ссылка на видео](https://youtu.be/aGK1WokKftY)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture4)
 
 **Лекция 5 (Полиморфизм)**
 - [ссылка на видео](https://youtu.be/wpz_DVxv89o)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture5)
 
 **Лекция 6 (Абстракция. Абстрактные классы и интерфейсы)**
 - [ссылка на видео](https://youtu.be/yW12cDuQ-yE)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture6)
 
 **Лекция 7 (Анонимные объекты, функции. Лямбда-выражения)**
 - [ссылка на видео](https://youtu.be/fzA9EXdlFes)
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
 **Лекция 8 (Обобщенное программирование)**
 - [ссылка на видео]()
-- [конспект лекции по теме]()
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
 ## Лабораторные работы
 
