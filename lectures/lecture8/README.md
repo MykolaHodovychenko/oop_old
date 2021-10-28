@@ -467,3 +467,4 @@ Accumulator accumulator3 = новий Accumulator(5.5d, "four"); // Виклич
 
 - [Німеєр, Леук "Програмування на Java. Вичерпне керівництво"] (https://cutt.ly/3RUXJV7), розділ 8
 - [Брюс Еккель - Філософія Java] (https://rutracker.org/forum/viewtopic.php?t=4941725), розділ 15
+- [Прийшов, побачив, узагальнив: поринаємо в Java Generics](https://habr.com/ru/company/sberbank/blog/416413/)
