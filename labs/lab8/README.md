@@ -77,7 +77,7 @@ class Printer {
 
 ### Задание 4
 
-Дан пример метода filter() из лабораторной работы 7.
+Дан пример метода `filter()` из лабораторной работы 7.
 
 ```java
 public int[] filter(int[] input, Predicate p) {
