@@ -467,3 +467,4 @@ Accumulator accumulator3 = new Accumulator(5.5d, "four"); // вызовет ош
 
 - [Нимейер, Леук "Программирование на Java. Исчерпывающее руководство"](https://cutt.ly/3RUXJV7), глава 8
 - [Брюс Эккель - Философия Java](https://rutracker.org/forum/viewtopic.php?t=4941725), глава 15
+- [Пришел, увидел, обобщил: погружаемся в Java Generics](https://habr.com/ru/company/sberbank/blog/416413/)
