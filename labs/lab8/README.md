@@ -136,7 +136,7 @@ class ConcreteTwoTuple {
     public final String first;
     public final Integer second;
 
-    public ConcreteTuple(String first, Integer second) {
+    public ConcreteTwoTuple(String first, Integer second) {
         this.first = first;
         this.second = second;
     }
@@ -170,7 +170,7 @@ class StudentRatingTuple {
     public final Student first;
     public final Integer second;
 
-    public ConcreteTuple(Student first, Integer second) {
+    public StudentRatingTuple(Student first, Integer second) {
         this.first = first;
         this.second = second;
     }
