@@ -1,0 +1,5 @@
+{
+    "markdown.styles": [
+        "https://cdn.jsdelivr.net/gh/dhdhagar/vscode-md-preview-light/style.min.css"
+    ]
+}
