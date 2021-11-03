@@ -58,3 +58,7 @@
 **Завдання на сьому лабораторну роботу**
 - [Посилання на відео](https://youtu.be/0dKmKC_0ykI)
 - [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
+
+**Завдання на восьму лабораторну роботу**
+- [Посилання на відео](https://youtu.be/75zyIo2rSRw)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
