@@ -29,7 +29,7 @@
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
 **Лекция 8 (Обобщенное программирование)**
-- [ссылка на видео]()
+- [ссылка на видео](https://youtu.be/1ZBRilr1FOM)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
 ## Лабораторные работы
