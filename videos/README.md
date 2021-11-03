@@ -2,6 +2,15 @@
 
 > :tv: Плейлист доступний [тут](https://youtube.com/playlist?list=PLKTsfoGIz8kfGfYo8cvGK6SXm_jOX3Vpc)
 
+
+## Додаткові матеріали
+
+**Деякі подробиці роботи с Java**
+- [Посилання на відео](https://youtu.be/nCc4fqfob1c)
+
+**Деякі аспекти роботи з рядками**
+- [Посилання на відео](https://youtu.be/3jj5Xb5oF9Q)
+
 ## Лекції
 
 **Лекція 2 (Об'єкти та класи)**
