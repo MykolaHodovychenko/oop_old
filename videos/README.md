@@ -32,6 +32,10 @@
 - [ссылка на видео](https://youtu.be/1ZBRilr1FOM)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
+**Лекция 9 (Коллекции. Часть 1)**
+- [ссылка на видео](https://youtu.be/O-DD_gTKwOQ)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture9)
+
 ## Лабораторные работы
 
 **Обсуждение первой лабораторной, задание на вторую**
