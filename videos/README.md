@@ -29,7 +29,7 @@
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
 **Лекція 8 (Узагальнене програмування)**
-- [Посилання на відео]()
+- [Посилання на відео](https://youtu.be/1ZBRilr1FOM)
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
 ## Лабораторні роботи
