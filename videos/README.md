@@ -32,6 +32,12 @@
 - [Посилання на відео]()
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
+##### Лекція 9 (Колекції. Списки та черги)
+
+- [Посилання на відео](https://youtu.be/O-DD_gTKwOQ)
+- [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture9)
+
+
 ## Лабораторні роботи
 
 **Обговорення першої лабораторної, завдання на другу**
@@ -58,3 +64,11 @@
 **Завдання на сьому лабораторну роботу**
 - [Посилання на відео](https://youtu.be/0dKmKC_0ykI)
 - [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
+
+**Завдання на восьму лабораторну роботу**
+- [Посилання на відео](https://youtu.be/75zyIo2rSRw)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab8)
+
+**Завдання на дев'яту лабораторну роботу**
+- [Посилання на відео](https://youtu.be/CBBR4oz39dI)
+- [Завдання на лабораторну роботу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab9)
