@@ -2,6 +2,14 @@
 
 > :tv: Плейлист доступен [здесь](https://youtube.com/playlist?list=PLKTsfoGIz8kfGfYo8cvGK6SXm_jOX3Vpc)
 
+## Дополнительные материалы
+
+**Некоторые подробности работы с Java**
+- [ссылка на видео](https://youtu.be/nCc4fqfob1c)
+
+**Некоторые аспекты работы со строками**
+- [ссылка на видео](https://youtu.be/3jj5Xb5oF9Q)
+
 ## Лекции
 
 **Лекция 2 (Объекты и классы)**
@@ -29,8 +37,12 @@
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
 **Лекция 8 (Обобщенное программирование)**
-- [ссылка на видео]()
+- [ссылка на видео](https://youtu.be/1ZBRilr1FOM)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
+
+**Лекция 9 (Коллекции. Часть 1)**
+- [ссылка на видео](https://youtu.be/O-DD_gTKwOQ)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture9)
 
 ## Лабораторные работы
 
@@ -58,3 +70,7 @@
 **Задание на седьмую лабораторную работу**
 - [ссылка на видео](https://youtu.be/0dKmKC_0ykI)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
+
+**Задание на восьмую лабораторную работу**
+- [ссылка на видео](https://youtu.be/75zyIo2rSRw)
+- [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab8)
