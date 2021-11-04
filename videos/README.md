@@ -5,9 +5,11 @@
 ## Дополнительные материалы
 
 **Некоторые подробности работы с Java**
+
 - [ссылка на видео](https://youtu.be/nCc4fqfob1c)
 
 **Некоторые аспекты работы со строками**
+
 - [ссылка на видео](https://youtu.be/3jj5Xb5oF9Q)
 
 ## Лекции
@@ -55,22 +57,32 @@
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab3)
  
 **Задание на четвертую лабораторную работу**
+
 - [ссылка на видео](https://youtu.be/1UeFn2ZUvXk)
 - [видео занятия группы АИ-205](https://youtu.be/l47bNAJY884)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab4)
 
 **Задание на пятую лабораторную работу**
+
 - [ссылка на видео](https://youtu.be/k8AyHKkFh0E)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab5)
 
 **Задание на шестую лабораторную работу**
+
 - [ссылка на видео](https://youtu.be/m3YpVgBy21M)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab6)
 
 **Задание на седьмую лабораторную работу**
+
 - [ссылка на видео](https://youtu.be/0dKmKC_0ykI)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
 
 **Задание на восьмую лабораторную работу**
+
 - [ссылка на видео](https://youtu.be/75zyIo2rSRw)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab8)
+
+**Задание на девятую лабораторную работу**
+
+- [ссылка на видео](https://youtu.be/CBBR4oz39dI)
+- [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab9)
