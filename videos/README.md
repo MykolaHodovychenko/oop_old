@@ -2,6 +2,15 @@
 
 > :tv: Плейлист доступний [тут](https://youtube.com/playlist?list=PLKTsfoGIz8kfGfYo8cvGK6SXm_jOX3Vpc)
 
+
+## Додаткові матеріали
+
+**Деякі подробиці роботи с Java**
+- [Посилання на відео](https://youtu.be/nCc4fqfob1c)
+
+**Деякі аспекти роботи з рядками**
+- [Посилання на відео](https://youtu.be/3jj5Xb5oF9Q)
+
 ## Лекції
 
 **Лекція 2 (Об'єкти та класи)**
@@ -29,14 +38,13 @@
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture7)
 
 **Лекція 8 (Узагальнене програмування)**
-- [Посилання на відео]()
+- [Посилання на відео](https://youtu.be/1ZBRilr1FOM)
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture8)
 
 ##### Лекція 9 (Колекції. Списки та черги)
 
 - [Посилання на відео](https://youtu.be/O-DD_gTKwOQ)
 - [Конспект лекції на тему](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture9)
-
 
 ## Лабораторні роботи
 
