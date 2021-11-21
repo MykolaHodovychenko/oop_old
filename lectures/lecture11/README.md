@@ -1,4 +1,4 @@
-# Лекция 11. Коллекции. Некоторые аспекты
+# Лекция 11. Некоторые аспекты коллекций. Паттерн "Итератор". Потоки данных
 
 ## Специальные коллекции
 
@@ -21,10 +21,6 @@ List<Integer> ten_zeros = Collections.nCopies(10, 0);
 ## Паттерн "Итератор"
 
 Представим себе класс `Cart`, который хранит набор положенных в корзину товаров и класс `Order`, в задачу которого входит формирование заказа из помещенных в корзину товаров. Для упрощения примера, представим себе, что "корзина" реализована обычным массивом и можем содержать не более 5 элементов.
-
-Давайте внимательно посмотрим на метод `makeOrder()`. Он получает на вход объект `Cart`, после чего он должен взять каждое наименование и цену товара и, допустим, добавить его в базу данных. Как это сделать?
-
-Самый очевидный способ реализовать перебор товаров - создадим геттер для поля `items` в классе `Cart`, после чего в методе `makeOrder()` с помощью цикла обойдем все элементы массива.
 
 ```java
 class Cart {
@@ -141,45 +137,34 @@ class Cart {
 В классе `Cart` создадим метод `getIterator()`, который будет создавать объект внутреннего класса `CartIterator` и возвращать его.
 
 ```java
-class Cart {
-    private Item[] items;
-    private int index;
+public class Cart {
 
-    private class CartIterator implements Iterator<Item> {
-        private int cursor = 0;
+    // Поля и методы
 
-        @Override
-        public Item next() {
-            if (hasNext())
-                return items[cursor++];
-            else
-                return null;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return cursor < index;
-        }
+    public Iterator<Item> getIterator() {
+        return new CartIterator();
     }
 }
+
 ```
 
 Теперь вернемся к классу `Order`. В методе `makeOrder()` получим объект итератора и проитерируем товары в корзине.
 
 ```java
-class Order {
+public class Order {
+    // Поля и методы
+
     public void makeOrder(Cart cart) {
-        for (int i = 0; i < cart.getItems().length; i++) {
-            
-            Iterator<Item> iterator = cart.getIterator();
-            while (iterator.hasNext()) {
-                Item item = iterator.next();
-                
-                // Работа с товаром
-            }
+        // Получаем объект итератора
+        Iterator<Item> iterator = cart.getIterator();
+
+        while(iterator.hasNext()) {
+            Item i = iterator.next();
+            // Добавление item в базу данных
         }
     }
 }
+
 ```
 
 В результате получилась следующая картина:
