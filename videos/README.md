@@ -50,43 +50,64 @@
 - [ссылка на видео](https://youtu.be/34sroSJojCI)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture10)
 
+**Лекция 11 (Потоки данных в Java)**
+- [ссылка на видео](https://youtu.be/W-wjIP6_w2E)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture11)
+
+**Лекция 12 (Исключения в Java)**
+- [ссылка на видео](https://youtu.be/CQdTnQd83cw)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture12)
+
+**Лекция 13 (Статические поля и методы. Вложенные классы. Перечисления)**
+- [ссылка на видео](https://youtu.be/TAwl_paGiO4)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture13)
+
+**Лекция 14 (Как работает Java? Внутреннее устройство JVM. Сборка мусора)**
+- [ссылка на видео](https://youtu.be/DsGRkL86gkg)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/lectures/lecture14)
+
 ## Лабораторные работы
 
-**Обсуждение первой лабораторной, задание на вторую**
+**Обсуждение 1 лабораторной, задание на 2**
 - [ссылка на видео](https://youtu.be/hGRYpwvC_II)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab2)
 
-**Обсуждение второй лабораторной, задание на третью**
+**Обсуждение 2 лабораторной, задание на 3**
 - [ссылка на видео](https://youtu.be/Q67PBFuAWVs)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab3)
  
-**Задание на четвертую лабораторную работу**
+**Задание на 4 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/1UeFn2ZUvXk)
 - [видео занятия группы АИ-205](https://youtu.be/l47bNAJY884)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab4)
 
-**Задание на пятую лабораторную работу**
+**Задание на 5 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/k8AyHKkFh0E)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab5)
 
-**Задание на шестую лабораторную работу**
+**Задание на 6 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/m3YpVgBy21M)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab6)
 
-**Задание на седьмую лабораторную работу**
+**Задание на 7 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/0dKmKC_0ykI)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab7)
 
-**Задание на восьмую лабораторную работу**
+**Задание на 8 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/75zyIo2rSRw)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab8)
 
-**Задание на девятую лабораторную работу**
+**Задание на 9 лабораторную работу**
+
+- [ссылка на видео](https://youtu.be/CBBR4oz39dI)
+- [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab9)
+
+**Задание на 10 лабораторную работу**
 
 - [ссылка на видео](https://youtu.be/CBBR4oz39dI)
 - [задание на лабораторную работу](https://github.com/MykolaHodovychenko/oop/tree/ru/labs/lab9)
