@@ -7,3 +7,7 @@
 **Лекция 16 (Принцип инверсии управления и внедрение зависимостей)**
 - [ссылка на видео](https://youtu.be/ihaAor1n3TU)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/lectures/lecture16)
+
+**Лекция 17 (Клиент-серверная архитектура. Создание простой RESTful веб-службы с помощью Spring Boot)**
+- [ссылка на видео](https://youtu.be/7Or5yR8IEyc)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/lectures/lecture17)
