@@ -1,0 +1,824 @@
+---
+layout: post
+title: Understanding Immutability and Pure Functions (for OOP)
+---
+
+<p>One important concept in functional programming is immutability. But also in
+object-oriented programming immutability and so called <em>immutable objects</em> getting
+more attention. The problem that I see especially from object-oriented programmers
+are really bad explanations. A lot of explanation I had see described it like this:
+<em>Just create a class and make all fields readonly (final or const) and
+you have an immutable object</em>.</p>
+<p>Explanations like these are <strong>horrible</strong>. Such explanations are so simplified that I
+would even call them <em>wrong</em>. So why are they so horrible? Because they don't really
+explain anything at all. A programmer new to this concept will just immediately
+think: <em>Uhm, but I want to change things! I want to add data to an array, I want to
+modify things. I want to do some kind of calculations. I don't want to have static non
+changing things. Immutability sounds not practical at all!</em></p>
+<p>So let's see what immutability really means.</p>
+<h2>Immutability in a Nutshell</h2>
+<p>A much more useful explanation is to say that <em>immutability</em> is not about <em>forbidding change</em>
+at all. Instead <em>immutability</em> is more on <strong>how</strong> to <em>handle change</em>. Immutability
+is not about forbidding some kind of operations. You still can add an element to
+an array, the difference is that you just do it differently.</p>
+<p>In an mutable world you would directly add your element to an array. In an immutable
+world you create a new array with your added element instead. The key concept is to
+understand that instead of modifying something you create something <em>new</em> with your
+change applied.</p>
+<p>Once you understand it is more about creating <em>new</em> things with your changes applied,
+the question that arise is more: <em>Why should that be better?</em></p>
+<h2>About OO</h2>
+<p>Before we go into all kinds of explanations we first have to address OO programming. At first,
+talking about immutability and OO at the same time is actually a bad idea. The problem is
+that immutability doesn't really fit in the OO world. Because of that we should first focus
+on immutability and how it works in a functional language. This will be several magnitudes
+easier. Once we understand it there, we go back to the OO world and look how everything
+fits in the OO world.</p>
+<p>So why does <em>immutability</em> not directly fit in the OO world? Because <em>immutability</em> is solely
+about data-structures. <em>Immutability</em> is the core idea that data cannot be changed. Functions
+take <em>immutable data</em> and they return <em>immutable data</em>.</p>
+<p>The problem is that in object-orientation you usually don't create data-structures. You
+encapsulate and hide data instead. Data-access is often even viewed as <em>bad</em>. Often you got told
+to create methods instead of providing access to data. This and other things are the reason
+why it is hard to <em>get</em> the concept of immutability especially as an OO programmer. We will later
+talk about this problem in more depth. For the moment we will put objects aside.</p>
+<h2>Immutability is about data</h2>
+<p>So Immutability really means that data itself cannot be changed. But as stated previously, instead
+of modifying data itself we call functions that then can return new immutable data. Let's look at
+some immutable data-structures.</p>
+<h3><code>int</code> is immutable</h3>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">x</span> <span class="o">=</span> <span class="n">5</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">y</span> <span class="o">=</span> <span class="n">10</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">z</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="i">x</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs3', 6)" onmouseover="showTip(event, 'fs3', 6)" class="i">y</span> <span class="c">// 15</span>
+</code></pre></td>
+</tr>
+</table>
+<p>You actually should be familiar with this because it even feels natural that <code>int</code> is immutable. You
+have a lot of operations like <code>+</code>, <code>-</code>,<code>*</code>, <code>*</code>, and some more in the <code>Math</code> class. All of those
+operations take some number, do some kind of operation with it and return something new instead.</p>
+<p><code>x</code> stays the same, instead <code>+</code> takes two arguments, and produces a new result. We can actually
+treat <code>+</code> just as a function that takes two <code>int</code> and produces a whole new <code>int</code>. As a result
+we get <code>z</code> that is <code>15</code>. We wouldn't expect that <code>x</code> or <code>y</code> also get modified at all.</p>
+<h3><code>string</code> is immutable</h3>
+<p>Using <code>int</code> to get the feeling of the concept is easy, but it is sometimes hard how this concept
+works with more complex types. Additional <code>int</code> is in most languages some kind of special <em>primitive</em>
+type or a so called <em>value type</em>. So we threat them anyway as some kind of <em>special</em>.</p>
+<p>So let's look at <code>string</code>. <code>string</code> is usually a <em>reference type</em> in most languages like any
+other class. But at least in Java or C#, they are still immutable.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="i">a</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="i">b</span> <span class="o">=</span> <span class="s">&quot;bar&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 10)" onmouseover="showTip(event, 'fs5', 10)" class="i">a</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="i">b</span> <span class="c">// &quot;foobar&quot;</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="i">foo1</span> <span class="o">=</span> <span class="s">&quot;foo1&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 13)" onmouseover="showTip(event, 'fs9', 13)" class="i">foo2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 14)" onmouseover="showTip(event, 'fs8', 14)" class="i">foo1</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 15)" onmouseover="showTip(event, 'fs10', 15)" class="f">Replace</span>(<span class="s">&#39;1&#39;</span>, <span class="s">&#39;2&#39;</span>)
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 16)" onmouseover="showTip(event, 'fs11', 16)" class="i">foo</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 17)" onmouseover="showTip(event, 'fs9', 17)" class="i">foo2</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs12', 18)" onmouseover="showTip(event, 'fs12', 18)" class="f">Remove</span>(<span class="n">3</span>,<span class="n">1</span>)
+</code></pre></td>
+</tr>
+</table>
+<p>In this examples we even already see a little bit of OO, because we call methods that <code>string</code> provides.
+But looking at the examples we still see that also <code>string</code> behaves much like <code>int</code>. If we add
+two strings together we don't modify a string. Instead we create a whole new string instead.</p>
+<p>We can observe the same with our method calls. Calling <code>foo1.Replace('1', '2')</code> doesn't change <code>foo1</code>
+instead we get a new string back with our change applied.</p>
+<h3><code>list</code> is immutable</h3>
+<p>So let's look into a more advanced immutable data-type a <code>list</code> in F#. (This is not
+<code>System.Collections.Generic.List&lt;T&gt;</code>).</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 19)" onmouseover="showTip(event, 'fs13', 19)" class="i">data</span> <span class="o">=</span> [<span class="n">1</span>;<span class="n">2</span>;<span class="n">3</span>;<span class="n">4</span>;<span class="n">5</span>]
+</code></pre></td>
+</tr>
+</table>
+<p>Usually we want operation for List, for example we want to add elements. In F# we could write something
+like this:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 20)" onmouseover="showTip(event, 'fs14', 20)" class="i">data2</span> <span class="o">=</span> <span class="n">0</span> <span class="o">::</span> <span onmouseout="hideTip(event, 'fs13', 21)" onmouseover="showTip(event, 'fs13', 21)" class="i">data</span>
+</code></pre></td>
+</tr>
+</table>
+<p>In the same spirit like <code>+</code> we have <code>::</code> for adding an element to the top of a list. But instead
+of modifying the list itself, we get a new list back. It is now important to note that now we have
+two lists. <code>data</code> now contains <code>[1;2;3;4;5]</code> and <code>data2</code> contains <code>[0;1;2;3;4;5]</code>.</p>
+<p>From the examples so far we actually can see a <em>pattern</em>. All of our functions take some arguments.
+But they always <em>return</em> us something new with our wanted modification applied. That alone means
+we can often identify mutation by looking at the function signature. Functions without a return
+value that just return <em>unit</em> or similar <em>void</em> in C# <em>often</em> mutate data. This alone is
+not a proof, but a very high indicator.</p>
+<p>So, let's assume we want to do some more real-world stuff with our list. Let's assume we want to multiply
+each element in an <code>int list</code>. Usually in imperative languages like C# you can see something like this:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">for</span> (<span class="k">int</span> i=<span class="n">0</span>; i&lt;array.Count<span class="n">-1</span>; i+<span class="o">+</span>) {
+    array[i] <span class="o">=</span> array[i] <span class="o">*</span> <span class="n">2</span>
+}
+</code></pre></td></tr></table>
+<p>but in an immutable world we would create a whole new list with our change applied. Instead of
+direct looping we use functions instead. So for example we have <code>List.map</code> that does this kind of
+operation for us.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 22)" onmouseover="showTip(event, 'fs13', 22)" class="i">data</span>  <span class="o">=</span> [<span class="n">1</span>;<span class="n">2</span>;<span class="n">3</span>;<span class="n">4</span>;<span class="n">5</span>]
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 23)" onmouseover="showTip(event, 'fs14', 23)" class="i">data2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs15', 24)" onmouseover="showTip(event, 'fs15', 24)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 25)" onmouseover="showTip(event, 'fs16', 25)" class="f">map</span> (<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs17', 26)" onmouseover="showTip(event, 'fs17', 26)" class="i">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 27)" onmouseover="showTip(event, 'fs17', 27)" class="i">x</span> <span class="o">*</span> <span class="n">2</span>) <span onmouseout="hideTip(event, 'fs13', 28)" onmouseover="showTip(event, 'fs13', 28)" class="i">data</span>
+</code></pre></td>
+</tr>
+</table>
+<p>After executing we once again have two lists. <code>data</code> that still contains <code>[1;2;3;4;5]</code> and
+<code>data2</code> that now contains <code>[2;4;6;8;10]</code>.</p>
+<h3>Records are immutable</h3>
+<p>Let's create another more advanced example. Let's create a <code>Person</code> type that represents a Person
+in a database.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs21', 32)" onmouseover="showTip(event, 'fs21', 32)" class="t">Person</span> <span class="o">=</span> {
+    <span onmouseout="hideTip(event, 'fs22', 33)" onmouseover="showTip(event, 'fs22', 33)" class="i">Id</span><span class="o">:</span>       <span onmouseout="hideTip(event, 'fs23', 34)" onmouseover="showTip(event, 'fs23', 34)" class="t">int</span>
+    <span onmouseout="hideTip(event, 'fs24', 35)" onmouseover="showTip(event, 'fs24', 35)" class="i">Name</span><span class="o">:</span>     <span onmouseout="hideTip(event, 'fs25', 36)" onmouseover="showTip(event, 'fs25', 36)" class="t">string</span>
+    <span onmouseout="hideTip(event, 'fs26', 37)" onmouseover="showTip(event, 'fs26', 37)" class="i">Birthday</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs18', 38)" onmouseover="showTip(event, 'fs18', 38)" class="t">DateTime</span>
+    <span onmouseout="hideTip(event, 'fs27', 39)" onmouseover="showTip(event, 'fs27', 39)" class="i">Likes</span><span class="o">:</span>    <span onmouseout="hideTip(event, 'fs25', 40)" onmouseover="showTip(event, 'fs25', 40)" class="t">string</span> <span onmouseout="hideTip(event, 'fs28', 41)" onmouseover="showTip(event, 'fs28', 41)" class="t">list</span>
+}
+</code></pre></td>
+</tr>
+</table>
+<p>We now could create a Person like this</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 42)" onmouseover="showTip(event, 'fs29', 42)" class="i">me</span> <span class="o">=</span> {
+    <span class="i">Id</span>       <span class="o">=</span> <span class="n">1</span>
+    <span class="i">Name</span>     <span class="o">=</span> <span class="s">&quot;David Raab&quot;</span>
+    <span class="i">Birthday</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 43)" onmouseover="showTip(event, 'fs18', 43)" class="t">DateTime</span>(<span class="n">1983</span>, <span class="n">02</span>, <span class="n">19</span>)
+    <span class="i">Likes</span>    <span class="o">=</span> [<span class="s">&quot;Pizza&quot;</span>]
+}
+</code></pre></td>
+</tr>
+</table>
+<p>This is a record in F#, and like all other data-types it is also <em>immutable</em> by default.
+So now let's assume we want to change some parts.I like "dark chocolate" and "tea" so
+let's add them. Because we cannot change our data, we have to create a new record instead.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 44)" onmouseover="showTip(event, 'fs30', 44)" class="i">me2</span> <span class="o">=</span> {
+    <span class="i">Id</span>       <span class="o">=</span> <span onmouseout="hideTip(event, 'fs29', 45)" onmouseover="showTip(event, 'fs29', 45)" class="i">me</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs22', 46)" onmouseover="showTip(event, 'fs22', 46)" class="i">Id</span>
+    <span class="i">Name</span>     <span class="o">=</span> <span onmouseout="hideTip(event, 'fs29', 47)" onmouseover="showTip(event, 'fs29', 47)" class="i">me</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 48)" onmouseover="showTip(event, 'fs24', 48)" class="i">Name</span>
+    <span class="i">Birthday</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs29', 49)" onmouseover="showTip(event, 'fs29', 49)" class="i">me</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 50)" onmouseover="showTip(event, 'fs26', 50)" class="i">Birthday</span>
+    <span class="i">Likes</span>    <span class="o">=</span> <span class="s">&quot;Tea&quot;</span> <span class="o">::</span> <span class="s">&quot;Dark Chocolate&quot;</span> <span class="o">::</span> <span onmouseout="hideTip(event, 'fs29', 51)" onmouseover="showTip(event, 'fs29', 51)" class="i">me</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs27', 52)" onmouseover="showTip(event, 'fs27', 52)" class="i">Likes</span>
+}
+</code></pre></td>
+</tr>
+</table>
+<p>What we now have are two separate variables. <code>me</code> still represents</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">{
+    <span class="i">Id</span>       <span class="o">=</span> <span class="n">1</span>
+    <span class="i">Name</span>     <span class="o">=</span> <span class="s">&quot;David Raab&quot;</span>
+    <span class="i">Birthday</span> <span class="o">=</span> <span class="n">19.02</span><span class="o">.</span><span class="n">1983</span> <span class="n">00</span><span class="o">:</span><span class="n">00</span><span class="o">:</span><span class="n">00</span>
+    <span class="i">Likes</span>    <span class="o">=</span> [<span class="s">&quot;Pizza&quot;</span>]
+}
+</code></pre></td>
+</tr>
+</table>
+<p>while <code>me2</code> represents</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">{
+    <span class="i">Id</span>       <span class="o">=</span> <span class="n">1</span>
+    <span class="i">Name</span>     <span class="o">=</span> <span class="s">&quot;David Raab&quot;</span>
+    <span class="i">Birthday</span> <span class="o">=</span> <span class="n">19.02</span><span class="o">.</span><span class="n">1983</span> <span class="n">00</span><span class="o">:</span><span class="n">00</span><span class="o">:</span><span class="n">00</span>
+    <span class="i">Likes</span>    <span class="o">=</span> [<span class="s">&quot;Tea&quot;</span>; <span class="s">&quot;Dark Chocolate&quot;</span>; <span class="s">&quot;Pizza&quot;</span>]
+}
+</code></pre></td>
+</tr>
+</table>
+<p>Such a <em>copy &amp; update</em> operation for records is quite common so F# provides a built-in
+language construct for it. We also could have written.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">me2</span> <span class="o">=</span> {<span class="i">me</span> <span class="k">with</span> <span class="i">Likes</span> <span class="o">=</span> <span class="s">&quot;Tea&quot;</span> <span class="o">::</span> <span class="s">&quot;Dark Chocolate&quot;</span> <span class="o">::</span> <span class="i">me</span><span class="o">.</span><span class="i">Likes</span>}
+</code></pre></td>
+</tr>
+</table>
+<p>So <em>immutability</em> is about data that cannot be changed. But when we want to change something
+we usually call a function that can create something new for us. Let's actually simplify
+our example even more. Let's create a <code>addLike</code> function instead of using the <code>copy &amp; update</code>
+mechanism all over our code.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 53)" onmouseover="showTip(event, 'fs31', 53)" class="f">addLike</span> <span onmouseout="hideTip(event, 'fs32', 54)" onmouseover="showTip(event, 'fs32', 54)" class="i">likes</span> <span onmouseout="hideTip(event, 'fs33', 55)" onmouseover="showTip(event, 'fs33', 55)" class="i">person</span> <span class="o">=</span> {<span onmouseout="hideTip(event, 'fs33', 56)" onmouseover="showTip(event, 'fs33', 56)" class="i">person</span> <span class="k">with</span> <span class="i">Likes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs32', 57)" onmouseover="showTip(event, 'fs32', 57)" class="i">likes</span> <span class="o">::</span> <span onmouseout="hideTip(event, 'fs33', 58)" onmouseover="showTip(event, 'fs33', 58)" class="i">person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs27', 59)" onmouseover="showTip(event, 'fs27', 59)" class="i">Likes</span>}
+</code></pre></td>
+</tr>
+</table>
+<p>What we now have is a function that takes two arguments. A <code>string</code> <code>likes</code> that we want to add
+and a <code>Person</code> record as its second argument. The function will then return a <em>new</em> <code>Person</code>
+record. Now we also could add our Elements by using <code>addLike</code> instead.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 60)" onmouseover="showTip(event, 'fs30', 60)" class="i">me2</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs31', 61)" onmouseover="showTip(event, 'fs31', 61)" class="f">addLike</span> <span class="s">&quot;Dark Chocolate&quot;</span> <span onmouseout="hideTip(event, 'fs29', 62)" onmouseover="showTip(event, 'fs29', 62)" class="i">me</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 63)" onmouseover="showTip(event, 'fs34', 63)" class="i">me3</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs31', 64)" onmouseover="showTip(event, 'fs31', 64)" class="f">addLike</span> <span class="s">&quot;Tea&quot;</span> <span onmouseout="hideTip(event, 'fs30', 65)" onmouseover="showTip(event, 'fs30', 65)" class="i">me2</span>
+</code></pre></td>
+</tr>
+</table>
+<p>In this example we call <code>addLike</code> with <code>Dark Chocolate</code> and <code>me</code>. And we get a new <code>Person</code> back
+with our change applied. Then we use <code>addLike</code> on <code>me2</code> to create our final <code>me3</code>.</p>
+<p>It can feel a little awkward to create a lot of intermediate variables, but we can get rid of them
+by chaining functions with <code>|&gt;</code>. So we also could have written it like this.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 66)" onmouseover="showTip(event, 'fs30', 66)" class="i">me2</span> <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs29', 67)" onmouseover="showTip(event, 'fs29', 67)" class="i">me</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs31', 68)" onmouseover="showTip(event, 'fs31', 68)" class="f">addLike</span> <span class="s">&quot;Dark Chocolate&quot;</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs31', 69)" onmouseover="showTip(event, 'fs31', 69)" class="f">addLike</span> <span class="s">&quot;Tea&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<p>Here <code>me</code> is <em>piped-into</em> <code>addLike "Dark Chocolate"</code>. This will result in a new <code>Person</code> record
+that then is once again <em>piped-into</em> <code>addLike "Tea"</code>. In object-oriented programming we could
+achieve something similar if we have a <code>Person</code> class with a method <code>AddLike</code> that returns a
+new <code>Person</code> object, instead of modifying some <code>private</code> fields. in C# this would result into
+something like this</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> me<span class="n">2</span> <span class="o">=</span> 
+    me
+    .AddLike(<span class="s">"Dark Chocolate"</span>)
+    .AddLike(<span class="s">"Tea"</span>);
+</code></pre></td></tr></table>
+<p>This is similar to <a href="https://en.wikipedia.org/wiki/Fluent_interface">Fluent Interfaces</a>.
+But the important point is that <code>me</code> as an object don't get modified. <code>AddLike</code> would return
+a whole new <code>Person</code> object with your operation applied. Because it is once again a <code>Person</code>
+you can chain methods. You also can get a <em>fluent-interface</em> by just returning <em>this</em> after
+each modification. It would look the same. But in the end <code>me</code> and <code>me2</code> would be references
+to the same object, and <code>me</code> would be changed.</p>
+<h2>Pure functions</h2>
+<p>In a <em>functional-only</em> language we could probably stop at this point. <em>Data</em> and <em>functions</em>
+are clearly separated, immutability is only about <em>data</em> that does not change. The big problem
+arises if a language also supports classes. Because a class is about <em>hiding data</em>
+and additionally contains <em>functions</em>, it introduces a lot of complexity. To understand
+the reason of this complexity, we first need to talk about <em>pure</em> and <em>impure</em> functions on
+its own.</p>
+<h3>Side-effects</h3>
+<p><em>Pure</em> functions are only those functions that don't have any kind of side-effects. So
+what exactly is a <em>side-effect</em>? A simple explanation would be: <em>A function only can
+depend on its input</em>. Calling a function with the same input, <em>always</em> has to produce the
+same output. No matter how often, or at what time you call it. We can view <code>+</code> as a pure function.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">x</span> <span class="o">=</span> <span class="n">3</span> <span class="o">+</span> <span class="n">5</span>
+</code></pre></td>
+</tr>
+</table>
+<p>No matter how often or at what time we execute the above statement, <code>x</code> should always be <code>8</code>.
+If at some point it is <em>possible</em> that it could return something different, we would have
+an <em>impure</em> function.</p>
+<p>In this example it seems even natural that we don't want any <em>impure</em> function. A <code>3 + 5</code>
+that sometimes could return something different sounds horrible. But the truth is, we
+often face <em>impure</em> functions and we usually also want them. Examples of <em>impure</em> functions are.</p>
+<ol>
+<li>Getting a random number</li>
+<li>Getting the current system time</li>
+<li>Getting the user input</li>
+<li>Reading data from a file</li>
+<li>Reading data from a network</li>
+</ol>
+<p>To deeper understand why they are impure. Which arguments would a function have that returns
+a random number? Usually we would say: <em>Such a function don't need any input</em>. And that is a problem.
+It means, whenever we call a function with no input. It always have to return the same output.
+So it just means, we cannot return <em>random numbers</em>, because otherwise that statement wouldn't be
+true. That's is also true for the other functions. We cannot for example implement a
+<code>readFile "file.txt"</code> function that returns the content of <code>"file.txt"</code>. Because that content
+could change every time. And whenever the content of the file changes. <code>readFile "file.txt"</code> would
+return something different.</p>
+<p>But currently we only only know half of the truth. Because a <em>function</em> still can be impure even
+following the above rule. There is even a second rule that a <em>pure function</em> have to fulfil:
+<em>We always can replace a pure function call with the value it produces, without that it yields any
+change to the program</em>.</p>
+<p>That means. Whenever we see <code>3 + 5</code>, we also could replace that calculations with <code>8</code>. Or if
+we see <code>readFile "file.txt"</code> we could replace all calls to <code>readFile "file.txt"</code> by the value
+that the first function call would produce. This also explains better why a <code>readFile "file.txt"</code>
+would be impure. If we call <code>readFile</code> and some time later once again, we would assume that it
+returns the new current state of the file. It also could yield an error if the function in the
+mean time was deleted. The point is, we expect that the function can return something
+different every time we call it.</p>
+<p>But this kind of description also eliminates some additional behaviour.</p>
+<ol>
+<li>We cannot print something to a console</li>
+<li>We cannot write to a file/database</li>
+<li>We cannot send data over network</li>
+</ol>
+<p>Let's assume we have <code>someFunciton 5</code> that always will return <code>10</code> but also prints something
+to the console. We couldn't replace all calls to <code>someFunction 5</code> just with <code>10</code> because otherwise
+we lose all log statements in our console.</p>
+<p>Thinking over it, we could ask the question. Can we even write any useful program without
+side-effects? The answer is no. That is the reason why Erik Meijer often say:
+<em>We all love side-effects</em>. But that doesn't mean we want side-effects happens all
+over our code in every function. If a statement like <code>3 + 5</code> could yield <code>10</code> that would
+probably drive a lot of people crazy, me too. We want side-effects but we want to somehow
+control them. We want to minimize side-effects as much as possible.</p>
+<p>So how do we do that? By letting pure functions return immutable data!</p>
+<h3>(Im)mutability and (im)pure functions</h3>
+<p>One interesting aspect is that both concepts are completely orthogonal. That means, we can have
+any combination of those. We can have pure functions that take mutable or immutable data, and return
+mutable or immutable data. And we can have impure functions that take and return mutable or immutable
+data. The thing is, mutability or immutability doesn't change whether a function is pure or not. This
+is important to understand that both concepts don't relate to each other. Let's for example look
+again at the above impure functions.</p>
+<ul>
+<li>A random number generator returns an immutable int/float</li>
+<li>A function returning the current time can return an immutable <code>DateTime</code></li>
+<li>A function that returns the user input returns an immutable string</li>
+<li>Reading a file or from a socket can also return an immutable string</li>
+<li>A function that prints something to the console takes an immutable string</li>
+<li>Sending/Serialization of data over network can take an immutable data-structure</li>
+</ul>
+<p>At this point, I cannot stress further how important it is to understand that immutability
+is all about data, not about functions or behaviour. We will see later why this is so important!</p>
+<h3>Pure functions with side-effects</h3>
+<p>The last important point is that we can have pure-functions even if they have some kind of
+side-effects. A typical example of this is a function that has internal caching with a mutable
+variable.</p>
+<p>We could come to the conclusion that this is an impure function as another variable as a
+side-effects gets changed. But actually, such a function fulfil all rules we have above. Even
+the fact that it mutates some variable. It doesn't really matter, as such a function will still
+always return the exact same results to its input. And we always also could replace the function
+call with its output.</p>
+<p>This is important because people all to often try to look at implementations, but the implementation
+itself shouldn't matter at all. The only thing that should matter is how a function behaves. If
+a function behaves like a pure function it is a pure function. The same is also true for
+mutability. A lot of people try hard to get rid of mutability, sometimes that can lead to
+bad performance or in general can make the code harder to understand. For example it is also
+fine to have a function with internal mutable state. As long as that function behaves like a pure
+function and even gets/returns immutable data, it is absolutely fine to have mutable local variables.</p>
+<p>I would even state that this is a big advantage of F#! For example a lot
+of the functions from the <code>List</code> module turn a List into a mutable array, do some work on it, and
+turn it back into an immutable list. And overall we don't care that it does that. As long as we
+use a function and it behaves like a pure function returning immutable data, we are fine with it.</p>
+<h2>Benefits of Immutability</h2>
+<p>To shorten the example. Let's assume everything is mutable and a <em>reference-type</em> and it also
+applies to numbers. Saying that, lets look at the following code.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">x</span> <span class="o">=</span> <span class="n">5</span>
+<span class="i">someFunction</span> <span class="i">x</span>
+<span class="k">let</span> <span class="i">y</span> <span class="o">=</span> <span class="i">x</span> <span class="o">+</span> <span class="n">3</span>
+</code></pre></td>
+</tr>
+</table>
+<p>What value is <code>y</code> now? The answer is, we don't know! <code>someFunction</code> could have changed <code>x</code> to
+some other value without that we are aware of it. So after our function did run, we cannot
+know what <code>x</code> is, so we don't know what <code>y</code> is. But what does that overall mean?</p>
+<p>Usually we are told that functions, or also classes, methods should be treated as <em>block-boxes</em>.
+So we should never have to look at how something is implemented. But the thing is, as long we
+have mutable data, that concept cannot work. Because as long we have mutable data it means that
+a function could do more as documented. We actually can never be sure that <code>x</code> don't get changed
+until we look at how <code>someFunction</code> is implemented. Lets look at another problem.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">if</span> <span class="i">value</span><span class="o">.</span><span class="i">isValid</span> <span class="k">then</span>
+    <span class="i">someFunction</span> <span class="i">x</span>
+    <span class="k">if</span> <span class="i">value</span><span class="o">.</span><span class="i">isValid</span> <span class="k">then</span>
+        <span class="o">..</span><span class="o">.</span>
+    <span class="o">..</span><span class="o">.</span>
+</code></pre></td>
+</tr>
+</table>
+<p>So what is the problem here? We are actually accessing <code>value.isValid</code> when it is <code>true</code>
+we enter the code. Once again we have <code>someFunction</code> using <code>value</code>. But wait, why do we now
+re-check <code>value.isValid</code>? It could <em>probably</em> be that the programmer in charge was drunk, but
+wait, can we be sure that the <code>value.isValid</code> is still true? In fact, as long as we have
+mutability the answer is <em>no</em>.</p>
+<p>The problem is we don't see the scope of our variables. It could be that our
+<code>someFunction</code> also has access to our <code>value</code> and modifies it. This sounds like a
+horrible programming-style but it is not so uncommon as you think. Did you ever had an
+array of objects, and returned an object from this array? If <em>yes</em>, you are open to such kind
+of errors. Because you have two functions that still can access the same object used at
+multiple places. And in fact we don't even need an array. Looking at object-oriented languages
+like C# nearly <em>everything</em> is actually a reference-type. <em>Objects</em> itself never get copied,
+only references are copied, and the only thing you pass around are references. But hat
+also means that every function could hold a reference to some data and directly change
+it whenever it wants to!</p>
+<p>So shortly, we cannot know if <code>value</code> still contains the same data. It already could have changed
+multiple times. This kind of possibility even raises with <em>multi-threaded</em> code. And
+I'm not talking about <em>thread-safety</em> or <em>race-conditions</em> here. <code>value</code> could be thread-safe
+and still changed in the mean time. The thing is, mutability basically makes any kind of code
+hard or nearly completely unpredictable.</p>
+<p>The problem is, this kind of problem grows the bigger our program becomes. Multi-threading
+also increase that kind of problems by several magnitudes. And this is the overall problem.
+With more code we anyway face problems of designing and maintaining programs. Mutability
+just can create hard to track errors. It can become insanely hard to reason about some
+kind of code if at every blink of an eye every value can be changed at any time. Immutability
+overall can make code easier to read and maintain.</p>
+<p>We also can gain other benefits out of it, like easy do/undo systems, backtracking in recursive
+functions for free, and a lot of other stuff.</p>
+<h2>Disadvantages of Immutability</h2>
+<p>Nothing in the world really just have only benefits. Everything in the world has its advantages and
+its disadvantages. So what are the disadvantages of immutability?</p>
+<p>Mainly it is performance.
+Some people think that <em>copying</em> is the often problem or <em>memory</em>, but that isn't true. For example
+let's look at the list example. A lot of people assume that by adding an element to a list a whole
+list itself has to be copied. But that isn't true at all. For example adding an element to the top
+is an <em>O(1)</em> operation. It only can be made so efficient <em>because</em> of immutability. An immutable list
+is really just a data-structure that contains an element and a reference to another list.</p>
+<p>That's why adding/removing from the top is efficient, instead of adding/removing at the end like
+many people knew it from types like <code>List&lt;T&gt;</code> in C#. The only reason why you could safely reference
+another list is because of immutability. With mutable data this wouldn't be possible as
+a list can change. So sharing data with immutable data is very safe. That's also the reason
+why you probably hear often that immutability works better with multi-threaded system. Or
+functional languages have advantages with multi-threaded systems. It is because immutable data
+are preferred and used in such languages.</p>
+<p>But it doesn't change that there sometimes exists a problem where this is still a bottleneck
+or the culprit to performance problems. The problem with immutable-data is that you have to build
+them incrementally. A List with 1 Million elements is really build just as</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">x</span> <span class="o">=</span> <span class="n">1</span> <span class="o">::</span> <span class="n">2</span> <span class="o">::</span> <span class="n">3</span> <span class="o">::</span> <span class="n">4</span> <span class="o">::</span> <span class="o">..</span><span class="o">.</span> <span class="o">::</span> []
+</code></pre></td>
+</tr>
+</table>
+<p>or in other words. a lot of copy and create options. Sure a compiler or a runtime could have
+some optimization. F# probably have them for lists, but that overall doesn't change that
+immutability can sometimes lead to such problems. That is also the very reason why we have
+a <code>StringBuilder</code>.</p>
+<p>Also a <code>String</code> is immutable but concatenating a lot of strings can create a lot of garbage
+throw-away objects. A <code>StringBuilder</code> can actually close that bridge. A <code>StringBuilder</code> uses
+a mutable string, and once you are done, you can get an immutable <code>string</code> back.</p>
+<p>Other problems can arise that some problems or algorithms can be hard to implement with
+immutability. I just want to point again at what was said for <em>pure</em> functions. If you encounter
+such problems you always can convert some kind of data to some kind of mutable data. Do your
+operation, and convert it back to a immutable data-type.</p>
+<p>So it is still important to understand that not everything is shiny and automatically better.
+Immutability can sometime have it's own problems, but there exists solutions for it.</p>
+<h2>Immutability and OO</h2>
+<p>Finally, we now have every knowledge to talk about immutability in object-oriented programming
+and why it is so damn hard. First, let's reconsider what an object is.</p>
+<p>The fundamental thing
+of object-oriented programming is to hide data and instead provide methods that do
+some stuff. We even have rules like <em>Law-of-Demeter</em> or <em>Tell don't ask</em> that express it.
+An object is not about asking it form some data, we usually just call a method to
+tell it that it should <em>do</em> something.</p>
+<p>Or in other words. Objects are just collection of functions. And here starts the problem. We
+actually learned that immutability has nothing to-do with functions at all! Immutability is
+about data not functions! Functions sure can be <em>pure</em> or <em>impure</em> but once again, we also
+learned that it doesn't matter at all for immutability. In fact we even consider it as good
+if we have side-effects that returns immutable data. That is how to solve the problem of
+side-effects. But just having data is usually discouraged in OO. OO has even it's own term
+for it. It is named the <em>Anemic Domain Model</em> to express if we have classes that just contains
+data.</p>
+<p>So, if object-oriented programming don't try to use data explicitly, if we only have objects
+that provides us functions (methods) to call. How on earth can we even talk about
+<em>immutable objects</em>? What should that thing even be? Does it even makes sense to talk
+about <em>immutable objects</em>? If we only provide methods, doesn't it make more sense to talk
+about <em>pure</em> and <em>impure objects</em> instead?</p>
+<p>To better see the problem, let's look at at the Random class.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 70)" onmouseover="showTip(event, 'fs35', 70)" class="i">rng</span>    <span class="o">=</span> <span onmouseout="hideTip(event, 'fs19', 71)" onmouseover="showTip(event, 'fs19', 71)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs36', 72)" onmouseover="showTip(event, 'fs36', 72)" class="t">Random</span>()
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs37', 73)" onmouseover="showTip(event, 'fs37', 73)" class="i">random</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs35', 74)" onmouseover="showTip(event, 'fs35', 74)" class="i">rng</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs38', 75)" onmouseover="showTip(event, 'fs38', 75)" class="f">Next</span>();
+</code></pre></td>
+</tr>
+</table>
+<p>Do we consider <code>rng</code> to be immutable or not? Let's look what we have. Besides the usual
+method inherited from <code>object</code> we only have three additional methods. <code>Next</code>, <code>NextDouble</code> and
+<code>NextBytes</code>. <code>rng</code> don't have any data or additional properties. We can call <code>Next</code> and
+we get an immutable <code>int</code> back. Besides that we cannot see any difference at all that <code>rng</code>
+itself changed at all! From the outside it looks like an immutable object!</p>
+<p>Sure we have knowledge on how a random class works. Usually we have an internal private field
+that holds the last generated number, with this the next number will be created when we call
+<code>Next</code>. But the point is, we cannot see that. Theoretically the implementation could also
+use no mutable field at all. It could just use the current time to generate a random number
+instead. So that <code>Next</code> is impure, but don't have any mutable field.</p>
+<p>From the outside the only thing we could say is that <code>Random</code> has three <em>impure</em> functions.
+And the object itself looks like immutable. We cannot see that any changes at all happens!</p>
+<p>So do we consider <code>Random</code> immutable or not? Actually if you really expect an answer, there
+isn't really one. Sure we could look at the implementation of it, but that is really bad,
+we shouldn't needed to look at some kind of implementation to determine if something is immutable
+or not. And as already explained above, it is anyway not a good idea. We should view something
+as immutable or pure by looking at how it behaves, not how it is implemented.</p>
+<p>So, now we are in a dilemma, how do we solve it? One thing we could do is to broaden the view of
+what an immutable object is. So we only consider something as immutable only if it has pure
+functions. As soon as we have one impure function on an object, we have to think that there
+exists a possibility that a private property could be modified.</p>
+<p>Let's look at another example that I saw some time ago. Someone provided a class like this</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs39', 76)" onmouseover="showTip(event, 'fs39', 76)" class="t">MutableSite</span>(<span onmouseout="hideTip(event, 'fs40', 77)" onmouseover="showTip(event, 'fs40', 77)" class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 78)" onmouseover="showTip(event, 'fs25', 78)" class="t">string</span>) <span class="o">=</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Url</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 79)" onmouseover="showTip(event, 'fs40', 79)" class="i">url</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="v">Text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>  <span class="k">with</span> <span class="i">get</span>,<span onmouseout="hideTip(event, 'fs41', 80)" onmouseover="showTip(event, 'fs41', 80)" class="i">set</span>
+    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs42', 81)" onmouseover="showTip(event, 'fs42', 81)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs43', 82)" onmouseover="showTip(event, 'fs43', 82)" class="f">Download</span>() <span class="o">=</span>
+        <span class="k">use</span> <span onmouseout="hideTip(event, 'fs44', 83)" onmouseover="showTip(event, 'fs44', 83)" class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 84)" onmouseover="showTip(event, 'fs19', 84)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 85)" onmouseover="showTip(event, 'fs45', 85)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 86)" onmouseover="showTip(event, 'fs46', 86)" class="t">WebClient</span>()
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 87)" onmouseover="showTip(event, 'fs47', 87)" class="i">content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 88)" onmouseover="showTip(event, 'fs44', 88)" class="i">wc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 89)" onmouseover="showTip(event, 'fs48', 89)" class="f">DownloadString</span>(<span onmouseout="hideTip(event, 'fs42', 90)" onmouseover="showTip(event, 'fs42', 90)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs49', 91)" onmouseover="showTip(event, 'fs49', 91)" class="i">Url</span>)
+        <span onmouseout="hideTip(event, 'fs42', 92)" onmouseover="showTip(event, 'fs42', 92)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs50', 93)" onmouseover="showTip(event, 'fs50', 93)" class="i">Text</span> <span class="o">&lt;-</span> <span onmouseout="hideTip(event, 'fs47', 94)" onmouseover="showTip(event, 'fs47', 94)" class="i">content</span>
+</code></pre></td>
+</tr>
+</table>
+<p>So, we have obviously a mutable object, right? We have an mutable <code>Text</code>. To fetch the current
+site we call <code>Download</code> that mutates <code>Text</code>. So let's look how that person made it immutable.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs51', 95)" onmouseover="showTip(event, 'fs51', 95)" class="t">ImmutableSite</span>(<span onmouseout="hideTip(event, 'fs40', 96)" onmouseover="showTip(event, 'fs40', 96)" class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 97)" onmouseover="showTip(event, 'fs25', 97)" class="t">string</span>) <span class="o">=</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Url</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 98)" onmouseover="showTip(event, 'fs40', 98)" class="i">url</span>
+    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs52', 99)" onmouseover="showTip(event, 'fs52', 99)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs53', 100)" onmouseover="showTip(event, 'fs53', 100)" class="f">Text</span>() <span class="o">=</span>
+        <span class="k">use</span> <span onmouseout="hideTip(event, 'fs44', 101)" onmouseover="showTip(event, 'fs44', 101)" class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 102)" onmouseover="showTip(event, 'fs19', 102)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 103)" onmouseover="showTip(event, 'fs45', 103)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 104)" onmouseover="showTip(event, 'fs46', 104)" class="t">WebClient</span>()
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 105)" onmouseover="showTip(event, 'fs47', 105)" class="i">content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 106)" onmouseover="showTip(event, 'fs44', 106)" class="i">wc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 107)" onmouseover="showTip(event, 'fs48', 107)" class="f">DownloadString</span>(<span onmouseout="hideTip(event, 'fs52', 108)" onmouseover="showTip(event, 'fs52', 108)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs54', 109)" onmouseover="showTip(event, 'fs54', 109)" class="i">Url</span>)
+        <span onmouseout="hideTip(event, 'fs47', 110)" onmouseover="showTip(event, 'fs47', 110)" class="i">content</span>
+</code></pre></td>
+</tr>
+</table>
+<p>So, he just eliminated the <code>Text</code> field. Instead he created a <code>Text</code> method that would
+directly download the site and return the content. Obviously he thought that now he
+had an immutable class. And actually that things is just silly. Both version don't
+differ at all!</p>
+<p>What is the difference between a <code>Text</code> field that always can return another string after
+we called <code>Download</code>, or a <code>Text</code> method that directly return a new string whenever
+we call the method? There is no difference at all between both version. The problem
+is that <code>Text</code> always can return something different. If it
+is either a mutable field or an impure method doesn't matter at all! Actually it even could
+also just be a property that could do this kind of stuff, so it doesn't even look any different
+to a normal mutable field instead of a method call.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs55', 111)" onmouseover="showTip(event, 'fs55', 111)" class="t">SiteWithProperty</span>(<span onmouseout="hideTip(event, 'fs40', 112)" onmouseover="showTip(event, 'fs40', 112)" class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 113)" onmouseover="showTip(event, 'fs25', 113)" class="t">string</span>) <span class="o">=</span>
+    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs56', 114)" onmouseover="showTip(event, 'fs56', 114)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs57', 115)" onmouseover="showTip(event, 'fs57', 115)" class="i">Url</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 116)" onmouseover="showTip(event, 'fs40', 116)" class="i">url</span>
+    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs56', 117)" onmouseover="showTip(event, 'fs56', 117)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs58', 118)" onmouseover="showTip(event, 'fs58', 118)" class="i">Text</span>
+        <span class="k">with</span> <span class="i">get</span>() <span class="o">=</span>
+            <span class="k">use</span> <span onmouseout="hideTip(event, 'fs44', 119)" onmouseover="showTip(event, 'fs44', 119)" class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 120)" onmouseover="showTip(event, 'fs19', 120)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 121)" onmouseover="showTip(event, 'fs45', 121)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 122)" onmouseover="showTip(event, 'fs46', 122)" class="t">WebClient</span>()
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 123)" onmouseover="showTip(event, 'fs47', 123)" class="i">content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 124)" onmouseover="showTip(event, 'fs44', 124)" class="i">wc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 125)" onmouseover="showTip(event, 'fs48', 125)" class="f">DownloadString</span>(<span onmouseout="hideTip(event, 'fs56', 126)" onmouseover="showTip(event, 'fs56', 126)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs59', 127)" onmouseover="showTip(event, 'fs59', 127)" class="i">Url</span>)
+            <span onmouseout="hideTip(event, 'fs47', 128)" onmouseover="showTip(event, 'fs47', 128)" class="i">content</span>
+</code></pre></td>
+</tr>
+</table>
+<p>The thing is, he thought he made any improvement just because he eliminated a mutable field,
+but actually that change don't matter at all. Whether you
+have a <code>Text</code> field that can change, a <code>Text</code> property that changes, or a <code>Text</code> method,
+in the end, <code>Text</code> always can return something different if you try to access it. So it
+improves nothing at all. We don't get any <em>benefits</em> at all that we should get
+by imposing immutability.</p>
+<p>This example just shows how hard it is to reason about immutable objects. The problem is
+the combination of functions and data in one container like a class. And there is even another
+problem. Actually it is just fine to have <em>impure functions</em> that return immutable data. But
+how do we do that if we consider <em>impure functions</em> on an object as bad?</p>
+<p>Actually in functional programming we don't have that problem at all. As every function stands on
+its own. Sure we group them in Modules, but it doesn't mean a function is part of some kind
+of structure. We can reason about every function separately. We can have pure and impure functions.
+And none of those changes the fact that we have immutable data. But in a class you combine
+functions with some kind of data in one container, the result is that we have to view an object
+as mutable as soon as it provides an impure method. The reason is that it behaves exactly
+like a mutable field would do.</p>
+<p>So how do we create our impure functions in object-oriented programming? As we learned,
+we just need them to do anything useful. Just eliminating all kind of impure functions
+doesn't help us to solve any problems. The only way out of it is if you write static methods
+for impure functions. In this way you can separate impure functions from pure functions
+and an object could be considered as pure/immutable as long it only has pure methods.
+So let's consider how a good immutable object should look like.</p>
+<h2>How to Design immutable objects</h2>
+<ol>
+<li>
+An immutable class don't have <em>hidden</em> (<code>private</code>) fields. <code>private</code> in the sense of hidden fields
+not exposed to the user. Sure a class can have <code>private</code> fields for its data. But a class always
+have to provide access to the data through a <em>readonly getter</em>. If you have <em>hidden</em> fields not
+exposed to the user, we cannot be sure that an object is <em>immutable</em> at all.
+</li>
+<li>
+A class should only contain <em>pure functions</em> (methods). We don't knew if an impure function
+modifies probably some hidden field or not. And it also doesn't matter. As soon we have a method
+that can return something different on every call we also cannot view it as <em>immutable</em>. If
+a field got changed alongside it or not doesn't matter at all. We judge <em>immutability</em> on how
+it behaves, not in how it is implemented. Because functions and data are mixed together in a class.
+We have to view every <em>impure method</em> as a violation against <em>immutability</em>.
+</li>
+<li>
+All <em>impure</em> functions should be static methods on a class, or extracted into it's own class.
+Let's look at <code>DateTime</code> as an example. For example we have <code>DateTime.Now</code> or <code>DateTime.Today</code>. Those
+are impure properties as they always return a different <code>DateTime</code> whenever we call it. But once we
+have a <code>DateTime</code> object we only have <em>pure methods</em> operating on it. All data are accessible
+through getters. All methods are <em>pure</em>.
+</li>
+<li>
+As we learned at the beginning, immutability is not about forbidding change, so an immutable
+objects should have a lot of methods that gives us easy ways to create new objects with our needed
+modification. If you don't provide them, it will probably painful to work with your objects. You
+can look again at <code>DateTime</code>. We have rich ways like <code>Add</code>, <code>AddDays</code>, <code>AddHours</code>, <code>AddMinutes</code> to
+create new DateTime objects. All of those methods return a new <code>DateTime</code> instead of mutating a field.
+</li>
+</ol>
+<p>So let's reconsider the <code>Site</code> class above. How should an immutable <code>Site</code> class looks like?</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="i">SiteImmutable</span>(<span class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 129)" onmouseover="showTip(event, 'fs25', 129)" class="i">string</span>, <span class="i">content</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 130)" onmouseover="showTip(event, 'fs25', 130)" class="i">string</span>, <span class="i">size</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs23', 131)" onmouseover="showTip(event, 'fs23', 131)" class="i">int</span>) <span class="o">=</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Url</span>     <span class="o">=</span> <span class="i">url</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Content</span> <span class="o">=</span> <span class="i">content</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Size</span>    <span class="o">=</span> <span class="i">size</span>
+    <span class="k">static</span> <span class="k">member</span> <span class="i">Download</span>(<span class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 132)" onmouseover="showTip(event, 'fs25', 132)" class="i">string</span>) <span class="o">=</span>
+        <span class="k">use</span> <span class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 133)" onmouseover="showTip(event, 'fs19', 133)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 134)" onmouseover="showTip(event, 'fs45', 134)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 135)" onmouseover="showTip(event, 'fs46', 135)" class="i">WebClient</span>()
+        <span class="k">let</span> <span class="i">content</span> <span class="o">=</span> <span class="i">wc</span><span class="o">.</span><span class="i">DownloadString</span>(<span class="i">url</span>)
+        <span class="i">SiteImmutable</span>(<span class="i">url</span>, <span class="i">content</span>, <span class="i">content</span><span class="o">.</span><span class="i">Length</span>)
+</code></pre></td>
+</tr>
+</table>
+<p>So what we really have is a class with our immutable fields. Our member fields
+cannot be changed later as they are immutable. Our class constructor has to be pure, the
+same as all methods. The creation of our immutable object is handled by a <em>static impure method</em>
+<code>let site = SiteImmutable.Download("http://example.org")</code></p>
+<p>Let's for example consider we later want an <code>Update</code> method, so we can re-fetch the <code>content</code> of a
+<code>site</code>. Instead of providing an <em>impure</em> <code>Update</code> method we have to provide an <em>impure static method</em>
+that does this for us.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs60', 136)" onmouseover="showTip(event, 'fs60', 136)" class="t">SiteImmutable</span>(<span onmouseout="hideTip(event, 'fs40', 137)" onmouseover="showTip(event, 'fs40', 137)" class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 138)" onmouseover="showTip(event, 'fs25', 138)" class="t">string</span>, <span onmouseout="hideTip(event, 'fs47', 139)" onmouseover="showTip(event, 'fs47', 139)" class="i">content</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 140)" onmouseover="showTip(event, 'fs25', 140)" class="t">string</span>, <span onmouseout="hideTip(event, 'fs61', 141)" onmouseover="showTip(event, 'fs61', 141)" class="i">size</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs23', 142)" onmouseover="showTip(event, 'fs23', 142)" class="t">int</span>) <span class="o">=</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Url</span>     <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 143)" onmouseover="showTip(event, 'fs40', 143)" class="i">url</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs47', 144)" onmouseover="showTip(event, 'fs47', 144)" class="i">content</span>
+    <span class="k">member</span> <span class="k">val</span> <span class="i">Size</span>    <span class="o">=</span> <span onmouseout="hideTip(event, 'fs61', 145)" onmouseover="showTip(event, 'fs61', 145)" class="i">size</span>
+    <span class="k">static</span> <span class="k">member</span> <span onmouseout="hideTip(event, 'fs62', 146)" onmouseover="showTip(event, 'fs62', 146)" class="f">Download</span>(<span onmouseout="hideTip(event, 'fs40', 147)" onmouseover="showTip(event, 'fs40', 147)" class="i">url</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs25', 148)" onmouseover="showTip(event, 'fs25', 148)" class="t">string</span>) <span class="o">=</span>
+        <span class="k">use</span> <span onmouseout="hideTip(event, 'fs44', 149)" onmouseover="showTip(event, 'fs44', 149)" class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 150)" onmouseover="showTip(event, 'fs19', 150)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 151)" onmouseover="showTip(event, 'fs45', 151)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 152)" onmouseover="showTip(event, 'fs46', 152)" class="t">WebClient</span>()
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 153)" onmouseover="showTip(event, 'fs47', 153)" class="i">content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 154)" onmouseover="showTip(event, 'fs44', 154)" class="i">wc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 155)" onmouseover="showTip(event, 'fs48', 155)" class="f">DownloadString</span>(<span onmouseout="hideTip(event, 'fs40', 156)" onmouseover="showTip(event, 'fs40', 156)" class="i">url</span>)
+        <span onmouseout="hideTip(event, 'fs60', 157)" onmouseover="showTip(event, 'fs60', 157)" class="t">SiteImmutable</span>(<span onmouseout="hideTip(event, 'fs40', 158)" onmouseover="showTip(event, 'fs40', 158)" class="i">url</span>, <span onmouseout="hideTip(event, 'fs47', 159)" onmouseover="showTip(event, 'fs47', 159)" class="i">content</span>, <span onmouseout="hideTip(event, 'fs47', 160)" onmouseover="showTip(event, 'fs47', 160)" class="i">content</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs63', 161)" onmouseover="showTip(event, 'fs63', 161)" class="i">Length</span>)
+    <span class="k">static</span> <span class="k">member</span> <span onmouseout="hideTip(event, 'fs64', 162)" onmouseover="showTip(event, 'fs64', 162)" class="f">Update</span>(<span onmouseout="hideTip(event, 'fs65', 163)" onmouseover="showTip(event, 'fs65', 163)" class="i">site</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs60', 164)" onmouseover="showTip(event, 'fs60', 164)" class="t">SiteImmutable</span>) <span class="o">=</span>
+        <span class="k">use</span> <span onmouseout="hideTip(event, 'fs44', 165)" onmouseover="showTip(event, 'fs44', 165)" class="i">wc</span>      <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs19', 166)" onmouseover="showTip(event, 'fs19', 166)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 167)" onmouseover="showTip(event, 'fs45', 167)" class="i">Net</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs46', 168)" onmouseover="showTip(event, 'fs46', 168)" class="t">WebClient</span>()
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 169)" onmouseover="showTip(event, 'fs47', 169)" class="i">content</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs44', 170)" onmouseover="showTip(event, 'fs44', 170)" class="i">wc</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 171)" onmouseover="showTip(event, 'fs48', 171)" class="f">DownloadString</span>(<span onmouseout="hideTip(event, 'fs65', 172)" onmouseover="showTip(event, 'fs65', 172)" class="i">site</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs66', 173)" onmouseover="showTip(event, 'fs66', 173)" class="i">Url</span>)
+        <span onmouseout="hideTip(event, 'fs60', 174)" onmouseover="showTip(event, 'fs60', 174)" class="t">SiteImmutable</span>(<span onmouseout="hideTip(event, 'fs65', 175)" onmouseover="showTip(event, 'fs65', 175)" class="i">site</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs66', 176)" onmouseover="showTip(event, 'fs66', 176)" class="i">Url</span>, <span onmouseout="hideTip(event, 'fs47', 177)" onmouseover="showTip(event, 'fs47', 177)" class="i">content</span>, <span onmouseout="hideTip(event, 'fs47', 178)" onmouseover="showTip(event, 'fs47', 178)" class="i">content</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs63', 179)" onmouseover="showTip(event, 'fs63', 179)" class="i">Length</span>)
+</code></pre></td>
+</tr>
+</table>
+<p>So if a user wants to update the content of an object he can do something like this</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs67', 180)" onmouseover="showTip(event, 'fs67', 180)" class="i">site</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs60', 181)" onmouseover="showTip(event, 'fs60', 181)" class="t">SiteImmutable</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs68', 182)" onmouseover="showTip(event, 'fs68', 182)" class="f">Download</span>(<span class="s">&quot;http://example.org&quot;</span>);
+<span class="c">// Later...</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs69', 183)" onmouseover="showTip(event, 'fs69', 183)" class="i">updatedSite</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs60', 184)" onmouseover="showTip(event, 'fs60', 184)" class="t">SiteImmutable</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs70', 185)" onmouseover="showTip(event, 'fs70', 185)" class="f">Update</span>(<span onmouseout="hideTip(event, 'fs67', 186)" onmouseover="showTip(event, 'fs67', 186)" class="i">site</span>)
+</code></pre></td>
+</tr>
+</table>
+<h2>Conclusion</h2>
+<p>Immutability itself is actually an easy concept. The problem starts when we don't separate
+data and functions clearly from each other like OO programming does it. To really embrace
+immutability in OOP you have to forget a lot of stuff you were taught that should be good. Create
+pure data-objects as much as possible. Don't implement <em>impure</em> methods on such data-objects.
+Instead create <em>impure static methods</em>. Those should be as small as possible with as
+little logic possible. They should return an immutable data-objects as soon as possible.</p>
+<p>A good place for <em>impure functions</em> are <em>static methods</em> or either create special
+<em>impure/mutable</em> objects instead. But don't try to implement a lot of logic for them,
+provide methods to convert an mutable object to an immutable object. <code>StringBuilder</code>
+is a good example for an mutable object that fixes the performance problems for creating
+complex strings. Once you are done you convert a <code>StringBuilder</code> instance to an
+immutable <code>string</code>.</p>
+
+
+<div class="tip" id="fs1">module Main</div>
+<div class="tip" id="fs2">val x : int<br /><br />Full name: Main.x</div>
+<div class="tip" id="fs3">val y : int<br /><br />Full name: Main.y</div>
+<div class="tip" id="fs4">val z : int<br /><br />Full name: Main.z</div>
+<div class="tip" id="fs5">val a : string<br /><br />Full name: Main.a</div>
+<div class="tip" id="fs6">val b : string<br /><br />Full name: Main.b</div>
+<div class="tip" id="fs7">val c : string<br /><br />Full name: Main.c</div>
+<div class="tip" id="fs8">val foo1 : string<br /><br />Full name: Main.foo1</div>
+<div class="tip" id="fs9">val foo2 : string<br /><br />Full name: Main.foo2</div>
+<div class="tip" id="fs10">System.String.Replace(oldValue: string, newValue: string) : string<br />System.String.Replace(oldChar: char, newChar: char) : string</div>
+<div class="tip" id="fs11">val foo : string<br /><br />Full name: Main.foo</div>
+<div class="tip" id="fs12">System.String.Remove(startIndex: int) : string<br />System.String.Remove(startIndex: int, count: int) : string</div>
+<div class="tip" id="fs13">val data : int list<br /><br />Full name: immutabilityandpurefunctions.data</div>
+<div class="tip" id="fs14">val data2 : int list<br /><br />Full name: immutabilityandpurefunctions.data2</div>
+<div class="tip" id="fs15">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs16">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list<br /><br />Full name: Microsoft.FSharp.Collections.List.map</div>
+<div class="tip" id="fs17">val x : int</div>
+<div class="tip" id="fs18">type DateTime = System.DateTime<br /><br />Full name: Main.DateTime</div>
+<div class="tip" id="fs19">namespace System</div>
+<div class="tip" id="fs20">Multiple items<br />type DateTime =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : ticks:int64 -&gt; DateTime + 10 overloads<br />&#160;&#160;&#160;&#160;member Add : value:TimeSpan -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddDays : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddHours : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMilliseconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMinutes : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMonths : months:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddSeconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddTicks : value:int64 -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddYears : value:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.DateTime<br /><br />--------------------<br />System.DateTime()<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(ticks: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(ticks: int64, kind: System.DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, calendar: System.Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, kind: System.DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, calendar: System.Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />System.DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int, kind: System.DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs21">type Person =<br />&#160;&#160;{Id: int;<br />&#160;&#160;&#160;Name: string;<br />&#160;&#160;&#160;Birthday: DateTime;<br />&#160;&#160;&#160;Likes: string list;}<br /><br />Full name: Main.Person</div>
+<div class="tip" id="fs22">Person.Id: int</div>
+<div class="tip" id="fs23">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs24">Person.Name: string</div>
+<div class="tip" id="fs25">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs26">Person.Birthday: DateTime</div>
+<div class="tip" id="fs27">Person.Likes: string list</div>
+<div class="tip" id="fs28">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
+<div class="tip" id="fs29">val me : Person<br /><br />Full name: Main.me</div>
+<div class="tip" id="fs30">val me2 : Person<br /><br />Full name: Main.me2</div>
+<div class="tip" id="fs31">val addLike : likes:string -&gt; person:Person -&gt; Person<br /><br />Full name: Main.addLike</div>
+<div class="tip" id="fs32">val likes : string</div>
+<div class="tip" id="fs33">val person : Person</div>
+<div class="tip" id="fs34">val me3 : Person<br /><br />Full name: Main.me3</div>
+<div class="tip" id="fs35">val rng : System.Random<br /><br />Full name: Main.rng</div>
+<div class="tip" id="fs36">Multiple items<br />type Random =<br />&#160;&#160;new : unit -&gt; Random + 1 overload<br />&#160;&#160;member Next : unit -&gt; int + 2 overloads<br />&#160;&#160;member NextBytes : buffer:byte[] -&gt; unit<br />&#160;&#160;member NextDouble : unit -&gt; float<br /><br />Full name: System.Random<br /><br />--------------------<br />System.Random() : unit<br />System.Random(Seed: int) : unit</div>
+<div class="tip" id="fs37">val random : int<br /><br />Full name: Main.random</div>
+<div class="tip" id="fs38">System.Random.Next() : int<br />System.Random.Next(maxValue: int) : int<br />System.Random.Next(minValue: int, maxValue: int) : int</div>
+<div class="tip" id="fs39">Multiple items<br />type MutableSite =<br />&#160;&#160;new : url:string -&gt; MutableSite<br />&#160;&#160;member Download : unit -&gt; unit<br />&#160;&#160;member Text : string<br />&#160;&#160;member Url : string<br />&#160;&#160;member Text : string with set<br /><br />Full name: Main.MutableSite<br /><br />--------------------<br />new : url:string -&gt; MutableSite</div>
+<div class="tip" id="fs40">val url : string</div>
+<div class="tip" id="fs41">val set : elements:seq&lt;&#39;T&gt; -&gt; Set&lt;&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.set</div>
+<div class="tip" id="fs42">val this : MutableSite</div>
+<div class="tip" id="fs43">member MutableSite.Download : unit -&gt; unit<br /><br />Full name: Main.MutableSite.Download</div>
+<div class="tip" id="fs44">val wc : System.Net.WebClient</div>
+<div class="tip" id="fs45">namespace System.Net</div>
+<div class="tip" id="fs46">Multiple items<br />type WebClient =<br />&#160;&#160;inherit Component<br />&#160;&#160;new : unit -&gt; WebClient<br />&#160;&#160;member BaseAddress : string with get, set<br />&#160;&#160;member CachePolicy : RequestCachePolicy with get, set<br />&#160;&#160;member CancelAsync : unit -&gt; unit<br />&#160;&#160;member Credentials : ICredentials with get, set<br />&#160;&#160;member DownloadData : address:string -&gt; byte[] + 1 overload<br />&#160;&#160;member DownloadDataAsync : address:Uri -&gt; unit + 1 overload<br />&#160;&#160;member DownloadFile : address:string * fileName:string -&gt; unit + 1 overload<br />&#160;&#160;member DownloadFileAsync : address:Uri * fileName:string -&gt; unit + 1 overload<br />&#160;&#160;member DownloadString : address:string -&gt; string + 1 overload<br />&#160;&#160;...<br /><br />Full name: System.Net.WebClient<br /><br />--------------------<br />System.Net.WebClient() : unit</div>
+<div class="tip" id="fs47">val content : string</div>
+<div class="tip" id="fs48">System.Net.WebClient.DownloadString(address: System.Uri) : string<br />System.Net.WebClient.DownloadString(address: string) : string</div>
+<div class="tip" id="fs49">property MutableSite.Url: string</div>
+<div class="tip" id="fs50">property MutableSite.Text: string</div>
+<div class="tip" id="fs51">Multiple items<br />type ImmutableSite =<br />&#160;&#160;new : url:string -&gt; ImmutableSite<br />&#160;&#160;member Text : unit -&gt; string<br />&#160;&#160;member Url : string<br /><br />Full name: Main.ImmutableSite<br /><br />--------------------<br />new : url:string -&gt; ImmutableSite</div>
+<div class="tip" id="fs52">val this : ImmutableSite</div>
+<div class="tip" id="fs53">member ImmutableSite.Text : unit -&gt; string<br /><br />Full name: Main.ImmutableSite.Text</div>
+<div class="tip" id="fs54">property ImmutableSite.Url: string</div>
+<div class="tip" id="fs55">Multiple items<br />type SiteWithProperty =<br />&#160;&#160;new : url:string -&gt; SiteWithProperty<br />&#160;&#160;member Text : string<br />&#160;&#160;member Url : string<br /><br />Full name: Main.SiteWithProperty<br /><br />--------------------<br />new : url:string -&gt; SiteWithProperty</div>
+<div class="tip" id="fs56">val this : SiteWithProperty</div>
+<div class="tip" id="fs57">member SiteWithProperty.Url : string<br /><br />Full name: Main.SiteWithProperty.Url</div>
+<div class="tip" id="fs58">member SiteWithProperty.Text : string<br /><br />Full name: Main.SiteWithProperty.Text</div>
+<div class="tip" id="fs59">property SiteWithProperty.Url: string</div>
+<div class="tip" id="fs60">Multiple items<br />type SiteImmutable =<br />&#160;&#160;new : url:string * content:string * size:int -&gt; SiteImmutable<br />&#160;&#160;member Content : string<br />&#160;&#160;member Size : int<br />&#160;&#160;member Url : string<br />&#160;&#160;static member Download : url:string -&gt; SiteImmutable<br />&#160;&#160;static member Update : site:SiteImmutable -&gt; SiteImmutable<br /><br />Full name: Main.SiteImmutable<br /><br />--------------------<br />new : url:string * content:string * size:int -&gt; SiteImmutable</div>
+<div class="tip" id="fs61">val size : int</div>
+<div class="tip" id="fs62">static member SiteImmutable.Download : url:string -&gt; SiteImmutable<br /><br />Full name: Main.SiteImmutable.Download</div>
+<div class="tip" id="fs63">property System.String.Length: int</div>
+<div class="tip" id="fs64">static member SiteImmutable.Update : site:SiteImmutable -&gt; SiteImmutable<br /><br />Full name: Main.SiteImmutable.Update</div>
+<div class="tip" id="fs65">val site : SiteImmutable</div>
+<div class="tip" id="fs66">property SiteImmutable.Url: string</div>
+<div class="tip" id="fs67">val site : SiteImmutable<br /><br />Full name: Main.site</div>
+<div class="tip" id="fs68">static member SiteImmutable.Download : url:string -&gt; SiteImmutable</div>
+<div class="tip" id="fs69">val updatedSite : SiteImmutable<br /><br />Full name: Main.updatedSite</div>
+<div class="tip" id="fs70">static member SiteImmutable.Update : site:SiteImmutable -&gt; SiteImmutable</div>
