@@ -11,3 +11,9 @@
 **Лекция 17 (Клиент-серверная архитектура. Создание простой RESTful веб-службы с помощью Spring Boot)**
 - [ссылка на видео](https://youtu.be/7Or5yR8IEyc)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/lectures/lecture17)
+
+**Лекция 18 (Быстрое создание приложения с помощью Spring Boot. Архитектура Spring-приложения)**
+- [ссылка на видео](https://youtu.be/GmYITVajlA8)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/lectures/lecture18)
+
+
