@@ -16,4 +16,8 @@
 - [ссылка на видео](https://youtu.be/GmYITVajlA8)
 - [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/lectures/lecture18)
 
+## Практики 
 
+**Практика 1 (Методология Scrum. Написание user stories и формирование backlog`а продукта)**
+- [ссылка на видео](https://youtu.be/R3-ySuhVEqk)
+- [конспект лекции по теме](https://github.com/MykolaHodovychenko/oop/tree/ru/second_term/practice/practice01)
